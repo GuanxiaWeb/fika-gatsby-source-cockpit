@@ -461,8 +461,7 @@ const createNodeField = (
 
   if (
     !(Array.isArray(nodeFieldValue) && nodeFieldValue.length === 0) &&
-    nodeFieldValue != null &&
-    nodeFieldValue !== ''
+    nodeFieldValue != null
   ) {
     const itemField = {
       type: nodeFieldType,
