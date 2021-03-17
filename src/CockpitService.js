@@ -210,6 +210,11 @@ module.exports = class CockpitService {
     getFieldsOfTypes(item, ['image', 'gallery']).forEach(field => {
       if (!Array.isArray(field.value)) {
         const imageField = field
+
+        if (imageField.value == "") {
+          return
+        }
+
         let path = imageField.value.path
 
         if (path == null) {
@@ -257,6 +262,10 @@ module.exports = class CockpitService {
 
   normalizeNodeItemAssets(item, existingAssets) {
     getFieldsOfTypes(item, ['asset']).forEach(assetField => {
+      if (assetField.value == "") {
+        return
+      }
+
       let path = assetField.value.path
 
       trimAssetField(assetField)

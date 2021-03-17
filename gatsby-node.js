@@ -56,6 +56,10 @@ exports.sourceNodes = async (
   )
 
   for (let path in images) {
+    if (path == "") {
+      continue
+    }
+
     const imageNode = await fileNodeFactory.createImageNode(path)
     if (imageNode) {
       images[path] = {
@@ -69,6 +73,10 @@ exports.sourceNodes = async (
   }
 
   for (let path in assets) {
+    if (path == "") {
+      continue
+    }
+
     const assetNode = await fileNodeFactory.createAssetNode(path)
     assets[path] = {
       localPath: copyFileToStaticFolder(assetNode),
