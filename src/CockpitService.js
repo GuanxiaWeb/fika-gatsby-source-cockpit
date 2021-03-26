@@ -211,14 +211,10 @@ module.exports = class CockpitService {
       if (!Array.isArray(field.value)) {
         const imageField = field
 
-        if (imageField.value == "") {
-          return
-        }
-
-        let path = imageField.value.path
+        let path = imageField?.value?.path
 
         if (path == null) {
-          return
+      	  path = ""
         }
 
         if (path.startsWith('/')) {
@@ -262,13 +258,15 @@ module.exports = class CockpitService {
 
   normalizeNodeItemAssets(item, existingAssets) {
     getFieldsOfTypes(item, ['asset']).forEach(assetField => {
-      if (assetField.value == "") {
-        return
+      let path = assetField.value?.path
+
+      if (path == null) {
+      	  path = ""
       }
 
-      let path = assetField.value.path
-
-      trimAssetField(assetField)
+      if (assetField.value !== null) {
+      	trimAssetField(assetField)
+  	  }
 
       path = `${this.baseUrl}/storage/uploads${path}`
 
@@ -468,10 +466,13 @@ const createNodeField = (
 ) => {
   const nodeFieldType = nodeFieldConfiguration.type
 
-  if (
-    !(Array.isArray(nodeFieldValue) && nodeFieldValue.length === 0) &&
-    nodeFieldValue != null
-  ) {
+    if ((Array.isArray(nodeFieldValue) && nodeFieldValue.length === 0)  || nodeFieldValue == null) {
+      return {
+        type: nodeFieldType,
+        value: null
+      }
+    }
+
     const itemField = {
       type: nodeFieldType,
     }
@@ -551,7 +552,6 @@ const createNodeField = (
       }
     }
     return itemField
-  }
 
   return null
 }

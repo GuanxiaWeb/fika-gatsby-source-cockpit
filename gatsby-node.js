@@ -56,10 +56,6 @@ exports.sourceNodes = async (
   )
 
   for (let path in images) {
-    if (path == "") {
-      continue
-    }
-
     const imageNode = await fileNodeFactory.createImageNode(path)
     if (imageNode) {
       images[path] = {

@@ -5,6 +5,9 @@ const { generateNodeId } = require('gatsby-node-helpers').default({
 })
 
 function getFieldsOfTypes(item, types) {
+  if (item === null)
+    return []
+
   const fieldsOfTypes = Object.keys(item)
     .filter(
       fieldName => item[fieldName] && types.includes(item[fieldName].type)
@@ -22,7 +25,7 @@ function getFieldsOfTypes(item, types) {
   Object.keys(item)
     .filter(fieldName => item[fieldName] && item[fieldName].type === 'repeater')
     .forEach(fieldName => {
-      item[fieldName].value.forEach(repeaterEntry => {
+      item[fieldName].value?.forEach(repeaterEntry => {
         fieldsOfTypes.push(
           ...getFieldsOfTypes({ repeater: repeaterEntry }, types)
         )
@@ -109,7 +112,7 @@ function linkCollectionLinkFieldsToCollectionItemNodes(node) {
             : `${linkedCollection._id}_${node.lang}`
         )
       )
-    } else {
+    } else if (field.value !== null) {
       field.value___NODE = generateNodeId(
         field.value.link,
         node.lang === 'any'
